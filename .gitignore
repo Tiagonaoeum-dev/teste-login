@@ -1,24 +1,287 @@
-# Compiled class file
-*.class
+describe('TESTE 2: Navegação entre Formulários', () => {
+  beforeEach(() => {
+    cy.visit('http://127.0.0.1:5500/index.html')
+})
+it('Deve carregar a página inicial corretamente', () => {
+    cy.title().should('include', 'Portal GOV BR');
+    cy.get('.gov-banner h1').should('contain', 'Portal GOV BR');
+    cy.get('#loginForm').should('be.visible');
+    cy.get('#cadastroForm').should('not.be.visible');
+  });
 
-# Log file
-*.log
+  it('Deve exibir o formulário de login como padrão', () => {
+    cy.get('#loginForm').should('have.class', 'active');
+    cy.get('#loginForm h2').should('contain', 'Login');
+    cy.get('#loginNome').should('be.visible');
+    cy.get('#loginCpf').should('be.visible');
+    cy.get('#loginSenha').should('be.visible');
+    cy.get('.btn-primary').should('contain', 'Entrar');
+  });
+describe('TESTE 2: Navegação entre Formulários', () => {
+  beforeEach(() => {
+    cy.visit('http://127.0.0.1:5500/index.html');
+  });
 
-# BlueJ files
-*.ctxt
+  it('Deve alternar para o formulário de cadastro', () => {
+    cy.get('.toggle-link').contains('Criar conta').click();
+    cy.get('#cadastroForm').should('have.class', 'active');
+    cy.get('#loginForm').should('not.have.class', 'active');
+    cy.get('#cadastroForm h2').should('contain', 'Cadastro');
+  });
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+  it('Deve voltar para o formulário de login', () => {
+    cy.get('.toggle-link').contains('Criar conta').click();
+    cy.get('.btn-secondary').contains('Voltar').click();
+    cy.get('#loginForm').should('have.class', 'active');
+    cy.get('#cadastroForm').should('not.have.class', 'active');
+  });
+});
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+  it('Deve mostrar erro ao tentar login com campos vazios', () => {
+    cy.get('.btn-primary').contains('Entrar').click();
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('Digite seu nome completo');
+    });
+  });
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+  it('Deve mostrar erro com CPF inválido (menos de 11 dígitos)', () => {
+    cy.get('#loginNome').type('João Silva');
+    cy.get('#loginCpf').type('123');
+    cy.get('#loginSenha').type('senha123');
+    cy.get('.btn-primary').contains('Entrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('11 dígitos');
+    });
+  });
+
+  it('Deve fazer login com CPF terminado em número par', () => {
+    cy.get('#loginNome').type('Maria Oliveira');
+    cy.get('#loginCpf').type('12345678902');
+    cy.get('#loginSenha').type('senha123');
+    cy.get('.btn-primary').contains('Entrar').click();
+    
+    cy.url().should('include', 'homepage.html');
+    cy.get('.welcome-banner').should('contain', 'Maria Oliveira');
+  });
+
+  it('Não deve fazer login com CPF terminado em número ímpar', () => {
+    cy.get('#loginNome').type('Pedro Santos');
+    cy.get('#loginCpf').type('12345678901');
+    cy.get('#loginSenha').type('senha123');
+    cy.get('.btn-primary').contains('Entrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('Credenciais inválidas');
+    });
+    cy.url().should('not.include', 'homepage.html');
+  });
+});
+
+describe('TESTE 4: Validações de Cadastro', () => {
+  beforeEach(() => {
+    cy.visit('http://127.0.0.1:5500/index.html');
+    cy.alternarParaCadastro();
+    cy.limparLocalStorage();
+  });
+
+  it('Deve validar nome com menos de 3 caracteres', () => {
+    cy.get('#cadastroNome').type('Ab');
+    cy.get('#cadastroCpf').type('12345678901');
+    cy.get('#cadastroDataNasc').type('1990-01-01');
+    cy.get('#cadastroEmail').type('teste@email.com');
+    cy.get('#cadastroSenha').type('senha123');
+    cy.get('#cadastroConfirmarSenha').type('senha123');
+    cy.get('#termos').check({ force: true });
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('pelo menos 3 caracteres');
+    });
+  });
+
+  it('Deve validar CPF com menos de 11 dígitos', () => {
+    cy.get('#cadastroNome').type('Carlos Souza');
+    cy.get('#cadastroCpf').type('123');
+    cy.get('#cadastroDataNasc').type('1990-01-01');
+    cy.get('#cadastroEmail').type('carlos@email.com');
+    cy.get('#cadastroSenha').type('senha123');
+    cy.get('#cadastroConfirmarSenha').type('senha123');
+    cy.get('#termos').check({ force: true });
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('11 dígitos');
+    });
+  });
+
+  it('Deve validar e-mail inválido', () => {
+    cy.get('#cadastroNome').type('Paula Costa');
+    cy.get('#cadastroCpf').type('12345678901');
+    cy.get('#cadastroDataNasc').type('1990-01-01');
+    cy.get('#cadastroEmail').type('email-invalido');
+    cy.get('#cadastroSenha').type('senha123');
+    cy.get('#cadastroConfirmarSenha').type('senha123');
+    cy.get('#termos').check({ force: true });
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('E-mail inválido');
+    });
+  });
+
+  it('Deve validar senha curta', () => {
+    cy.get('#cadastroNome').type('Lucas Mendes');
+    cy.get('#cadastroCpf').type('12345678901');
+    cy.get('#cadastroDataNasc').type('1990-01-01');
+    cy.get('#cadastroEmail').type('lucas@email.com');
+    cy.get('#cadastroSenha').type('123');
+    cy.get('#cadastroConfirmarSenha').type('123');
+    cy.get('#termos').check({ force: true });
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('6 e 20 caracteres');
+    });
+  });
+
+  it('Deve validar confirmação de senha diferente', () => {
+    cy.get('#cadastroNome').type('Fernanda Lima');
+    cy.get('#cadastroCpf').type('12345678901');
+    cy.get('#cadastroDataNasc').type('1990-01-01');
+    cy.get('#cadastroEmail').type('fernanda@email.com');
+    cy.get('#cadastroSenha').type('senha123');
+    cy.get('#cadastroConfirmarSenha').type('senha456');
+    cy.get('#termos').check({ force: true });
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('não coincidem');
+    });
+  });
+
+  it('Deve validar termos não aceitos', () => {
+    cy.get('#cadastroNome').type('Ricardo Alves');
+    cy.get('#cadastroCpf').type('12345678901');
+    cy.get('#cadastroDataNasc').type('1990-01-01');
+    cy.get('#cadastroEmail').type('ricardo@email.com');
+    cy.get('#cadastroSenha').type('senha123');
+    cy.get('#cadastroConfirmarSenha').type('senha123');
+    // NÃO marca os termos
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('aceitar os termos');
+    });
+  });
+
+  it('Deve realizar cadastro com sucesso', () => {
+    cy.get('#cadastroNome').type('Teste Cypress');
+    cy.get('#cadastroCpf').type('52998224725');
+    cy.get('#cadastroDataNasc').type('1990-01-01');
+    cy.get('#cadastroEmail').type('cypress@teste.com');
+    cy.get('#cadastroSenha').type('senha123');
+    cy.get('#cadastroConfirmarSenha').type('senha123');
+    cy.get('#termos').check({ force: true });
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    
+    cy.on('window:alert', (text) => {
+      expect(text).to.include('sucesso');
+    });
+    
+    cy.get('#loginForm').should('have.class', 'active');
+    
+    // Verifica se usuário foi salvo
+    cy.window().then((win) => {
+      const usuario = JSON.parse(win.localStorage.getItem('usuario_52998224725'));
+      expect(usuario).to.exist;
+      expect(usuario.nome).to.equal('Teste Cypress');
+      expect(usuario.email).to.equal('cypress@teste.com');
+    });
+  });
+});
+
+describe('TESTE 5: Fluxo Completo Cadastro + Login', () => {
+  beforeEach(() => {;
+    cy.limparLocalStorage();
+  });
+
+  it('Deve cadastrar e fazer login com o mesmo usuário', () => {
+    // 1. Cadastro
+    cy.alternarParaCadastro();
+    
+    cy.get('#cadastroNome').type('Usuario Completo');
+    cy.get('#cadastroCpf').type('12345678902');
+    cy.get('#cadastroDataNasc').type('1985-05-15');
+    cy.get('#cadastroEmail').type('completo@teste.com');
+    cy.get('#cadastroSenha').type('minhasenha123');
+    cy.get('#cadastroConfirmarSenha').type('minhasenha123');
+    cy.get('#termos').check({ force: true });
+    
+    cy.get('.btn-primary').contains('Cadastrar').click();
+    cy.wait(2000);
+    
+    // 2. Login
+    cy.get('#loginNome').type('Usuario Completo');
+    cy.get('#loginCpf').type('12345678902');
+    cy.get('#loginSenha').type('minhasenha123');
+    cy.get('.btn-primary').contains('Entrar').click();
+    
+    // 3. Verifica homepage
+    cy.url().should('include', 'homepage.html');
+    cy.get('.welcome-banner').should('contain', 'Usuario Completo');
+  });
+});
+
+describe('TESTE 6: Testes da Homepage', () => {
+  it('Deve redirecionar para login se não estiver logado', () => {
+    cy.visit('/homepage.html');
+    cy.url().should('include', 'index.html');
+  });
+
+  it('Deve fazer logout corretamente', () => {
+    // Login primeiro
+    cy.visit('http://127.0.0.1:5500/index.html');
+    cy.get('#loginNome').type('Teste Logout');
+    cy.get('#loginCpf').type('12345678902');
+    cy.get('#loginSenha').type('senha123');
+    cy.get('.btn-primary').contains('Entrar').click();
+    
+    // Verifica homepage
+    cy.url().should('include', 'homepage.html');
+    
+    // Clica em sair
+    cy.get('.logout').click();
+    
+    // Verifica redirecionamento
+    cy.url().should('include', 'index.html');
+    
+    // Tenta acessar homepage sem login
+    cy.visit('/homepage.html');
+    cy.url().should('include', 'index.html');
+  });
+
+  it('Deve mostrar os serviços na homepage', () => {
+    // Login primeiro
+    cy.visit('http://127.0.0.1:5500/index.html');
+    cy.get('#loginNome').type('Usuario Servicos');
+    cy.get('#loginCpf').type('12345678902');
+    cy.get('#loginSenha').type('senha123');
+    cy.get('.btn-primary').contains('Entrar').click();
+    
+    // Verifica conteúdo da homepage
+    cy.get('.dashboard-grid h3').should('contain', 'Serviços Disponíveis');
+    cy.get('.dashboard-card').should('have.length', 6);
+    cy.get('.dashboard-card').first().should('contain', 'Documentos');
+    cy.get('.news-card').should('have.length.at.least', 3);
+  });
+});
+
+
