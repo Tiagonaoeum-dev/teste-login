@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal GOV BR - Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<header class="gov-header">
+  <div class="header-content">
+    <div class="header-logo">
+      <i class="fas fa-shield-alt"></i>
+      <h1>Portal GOV BR</h1>
+    </div>
+    <div class="user-info" id="userInfo">
+      <!-- Preenchido pelo JavaScript -->
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Início</a>
+    <a href="#servicos" class="nav-link"><i class="fas fa-concierge-bell"></i> Serviços</a>
+    <a href="#documentos" class="nav-link"><i class="fas fa-file-alt"></i> Documentos</a>
+    <a href="#noticias" class="nav-link"><i class="fas fa-newspaper"></i> Notícias</a>
+    <a href="javascript:void(0)" class="nav-link logout" onclick="sair()">
+      <i class="fas fa-sign-out-alt"></i> Sair
+    </a>
+  </nav>
+</header>
+
+<main class="main-content">
+  <section class="welcome-banner">
+    <div class="welcome-content">
+      <h2 id="welcomeMessage">Bem-vindo ao Portal do Governo Federal</h2>
+      <p>Acesse todos os serviços públicos de forma rápida e segura</p>
+    </div>
+    <div class="welcome-icon">
+      <i class="fas fa-landmark"></i>
+    </div>
+  </section>
+
+  <section class="dashboard-grid" id="servicos">
+    <h3 class="section-title"><i class="fas fa-concierge-bell"></i> Serviços Disponíveis</h3>
+    <div class="cards-container">
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-id-card"></i>
+        </div>
+        <h4>Documentos</h4>
+        <p>Emita sua Carteira de Identidade, CPF e outros documentos</p>
+        <button class="card-btn">Acessar</button>
+      </div>
+      
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-hand-holding-usd"></i>
+        </div>
+        <h4>Benefícios</h4>
+        <p>Consulte e solicite benefícios sociais</p>
+        <button class="card-btn">Consultar</button>
+      </div>
+      
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-file-contract"></i>
+        </div>
+        <h4>Impostos</h4>
+        <p>Declaração e consulta de impostos</p>
+        <button class="card-btn">Declarar</button>
+      </div>
+      
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-heartbeat"></i>
+        </div>
+        <h4>Saúde</h4>
+        <p>Agendamentos e serviços do SUS</p>
+        <button class="card-btn">Agendar</button>
+      </div>
+      
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h4>Educação</h4>
+        <p>Matrículas, bolsas e programas educacionais</p>
+        <button class="card-btn">Estudar</button>
+      </div>
+      
+      <div class="dashboard-card">
+        <div class="card-icon">
+          <i class="fas fa-hands-helping"></i>
+        </div>
+        <h4>Suporte</h4>
+        <p>Central de atendimento e ajuda</p>
+        <button class="card-btn">Contatar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-section" id="noticias">
+    <h3 class="section-title"><i class="fas fa-newspaper"></i> Últimas Notícias</h3>
+    <div class="news-container">
+      <article class="news-card">
+        <h4>Novos Serviços Digitais</h4>
+        <p>Governo amplia oferta de serviços públicos online. Mais de 100 novos serviços disponíveis.</p>
+        <span class="news-date">15/03/2024</span>
+      </article>
+      <article class="news-card">
+        <h4>Campanha de Vacinação</h4>
+        <p>Nova fase da campanha de vacinação contra influenza começa na próxima semana.</p>
+        <span class="news-date">12/03/2024</span>
+      </article>
+      <article class="news-card">
+        <h4>Transparência Pública</h4>
+        <p>Portal da Transparência atinge marca de 1 milhão de acessos mensais.</p>
+        <span class="news-date">10/03/2024</span>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="gov-footer">
+  <div class="footer-content">
+    <p>© 2024 Governo Federal do Brasil. Todos os direitos reservados.</p>
+    <p>Sistema de demonstração para fins educacionais | Versão 1.0</p>
+    <div class="footer-links">
+      <a href="#"><i class="fas fa-shield-alt"></i> Segurança</a>
+      <a href="#"><i class="fas fa-question-circle"></i> Ajuda</a>
+      <a href="#"><i class="fas fa-envelope"></i> Contato</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Verificar se usuário está logado
+document.addEventListener('DOMContentLoaded', function() {
+  const usuario = JSON.parse(localStorage.getItem('usuario_logado'));
+  
+  if (!usuario) {
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  // Atualizar informações do usuário
+  document.getElementById('welcomeMessage').textContent = `Bem-vindo(a), ${usuario.nome}!`;
+  
+  const userInfoDiv = document.getElementById('userInfo');
+  userInfoDiv.innerHTML = `
+    <div class="user-details">
+      <span class="user-name">${usuario.nome}</span>
+      <span class="user-cpf">CPF: ${usuario.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}</span>
+    </div>
+    <div class="user-avatar">
+      <i class="fas fa-user-circle"></i>
+    </div>
+  `;
+});
+
+function sair() {
+  localStorage.removeItem('usuario_logado');
+  window.location.href = 'index.html';
+}
+</script>
+
+<style>
+/* Estilos específicos da homepage */
+.gov-header {
+  background: linear-gradient(135deg, #0066cc, #004d99);
+  padding: 20px 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: white;
+}
+
+.header-logo i {
+  font-size: 2rem;
+}
+
+.header-logo h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: white;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.user-cpf {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.user-avatar i {
+  font-size: 2.5rem;
+}
+
+.main-nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.nav-link.logout:hover {
+  background: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.main-content {
+  padding: 40px;
+  background: #f8f9fa;
+  min-height: calc(100vh - 200px);
+}
+
+.welcome-banner {
+  background: linear-gradient(135deg, #0066cc, #004d99);
+  color: white;
+  padding: 40px;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
+}
+
+.welcome-content h2 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.welcome-content p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.welcome-icon i {
+  font-size: 4rem;
+  opacity: 0.8;
+}
+
+.section-title {
+  color: #0066cc;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 4px solid #0066cc;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+  background: rgba(0, 102, 204, 0.1);
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+}
