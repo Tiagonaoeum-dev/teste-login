@@ -1,0 +1,440 @@
+/* Reset e configurações gerais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  line-height: 1.6;
+}
+
+/* Container principal */
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 40, 100, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Banner do GOV */
+.gov-banner {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #0066cc;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.logo-icon {
+  font-size: 2.5rem;
+  color: #0066cc;
+  background: rgba(0, 102, 204, 0.1);
+  padding: 15px;
+  border-radius: 50%;
+}
+
+.gov-banner h1 {
+  color: #0066cc;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Formulários */
+.form {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.form.active {
+  display: block;
+}
+
+.form h2 {
+  color: #0066cc;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Grupos de input */
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 102, 204, 0.2);
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #0066cc;
+  font-size: 1.1rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px 15px 15px 50px;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  border-left: 3px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  border-left-color: #0066cc;
+}
+
+.input-group input::placeholder {
+  color: #999;
+}
+
+.input-label {
+  position: absolute;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.input-group input:focus + .input-label,
+.input-group input:not(:placeholder-shown) + .input-label {
+  top: 8px;
+  font-size: 0.75rem;
+  color: #0066cc;
+}
+
+/* Tooltip */
+.info-tooltip {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: help;
+  color: #999;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.85rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.info-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Botões */
+.btn-primary, .btn-secondary {
+  padding: 15px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0066cc, #004d99);
+  color: white;
+  box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #004d99, #003366);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #666;
+  border: 2px solid #dee2e6;
+}
+
+.btn-secondary:hover {
+  background: #e9ecef;
+  color: #0066cc;
+  border-color: #0066cc;
+}
+
+/* Termos */
+.termos {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #0066cc;
+}
+
+.termos input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+.termos label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.termos a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.termos a:hover {
+  text-decoration: underline;
+}
+
+/* Ações do formulário */
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.toggle-link {
+  color: #0066cc;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.toggle-link:hover {
+  color: #004d99;
+  text-decoration: underline;
+}
+
+/* Caixa de informações */
+.info-box {
+  margin-top: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 77, 153, 0.05));
+  border-radius: 15px;
+  border-left: 5px solid #0066cc;
+}
+
+.info-box h3 {
+  color: #0066cc;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-box p {
+  color: #666;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-box i.fa-check-circle {
+  color: #28a745;
+}
+
+/* Footer */
+.gov-footer {
+  text-align: center;
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  margin-top: auto;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.gov-footer p {
+  margin: 5px 0;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .container {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .form-actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .logo-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .gov-banner h1 {
+    font-size: 1.5rem;
+  }
+}
+/* Estilos para validação visual */
+input.valid {
+  border-left: 4px solid #28a745 !important;
+}
+
+input.invalid {
+  border-left: 4px solid #dc3545 !important;
+}
+
+/* Indicador de força da senha */
+.forca-senha {
+  font-size: 0.85rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.forca-fraca {
+  background-color: #dc3545;
+  color: white;
+}
+
+.forca-media {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.forca-forte {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Tooltips */
+.info-tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+  color: #6c757d;
+  cursor: help;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.85rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.info-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Estados de foco melhorados */
+.input-group:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 102, 204, 0.2);
+}
+
+.input-group:focus-within .input-icon {
+  color: #004d99;
+  transform: translateY(-50%) scale(1.1);
+}
