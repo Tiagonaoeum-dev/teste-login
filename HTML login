@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal GOV BR - Login</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="gov-banner">
+    <div class="logo-container">
+      <i class="fas fa-shield-alt logo-icon"></i>
+      <h1>Portal GOV BR</h1>
+    </div>
+    <p class="subtitle">Acesso seguro aos serviços do Governo Federal</p>
+  </div>
+
+  <div id="loginForm" class="form active">
+    <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+    <div class="input-group">
+      <i class="fas fa-user input-icon"></i>
+      <input id="loginNome" type="text" placeholder="Nome completo" required>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-id-card input-icon"></i>
+      <input id="loginCpf" type="text" placeholder="CPF (apenas números)" maxlength="11" required>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-lock input-icon"></i>
+      <input id="loginSenha" type="password" placeholder="Senha" required>
+    </div>
+    <button class="btn-primary" onclick="realizarLogin()">
+      <i class="fas fa-sign-in-alt"></i> Entrar
+    </button>
+    <div class="form-footer">
+      <span class="toggle-link" onclick="mostrarCadastro()">
+        <i class="fas fa-user-plus"></i> Criar conta
+      </span>
+      <span class="toggle-link" onclick="esqueciSenha()">
+        <i class="fas fa-key"></i> Esqueci a senha
+      </span>
+    </div>
+  </div>
+
+  <div id="cadastroForm" class="form">
+    <h2><i class="fas fa-user-plus"></i> Cadastro</h2>
+    <div class="input-group">
+      <i class="fas fa-user input-icon"></i>
+      <input id="cadastroNome" type="text" placeholder="Nome completo" required>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-id-card input-icon"></i>
+      <input id="cadastroCpf" type="text" placeholder="CPF (apenas números)" maxlength="11" required>
+      <div class="info-tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span class="tooltip-text">Digite apenas números (11 dígitos)</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-calendar-alt input-icon"></i>
+      <input id="cadastroDataNasc" type="date" required>
+      <label class="input-label">Data de Nascimento</label>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-envelope input-icon"></i>
+      <input id="cadastroEmail" type="email" placeholder="E-mail válido" required>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-lock input-icon"></i>
+      <input id="cadastroSenha" type="password" placeholder="Senha (mínimo 6 caracteres)" minlength="6" required>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-lock input-icon"></i>
+      <input id="cadastroConfirmarSenha" type="password" placeholder="Confirmar Senha" required>
+    </div>
+    
+    <div class="termos">
+      <input type="checkbox" id="termos">
+      <label for="termos">Aceito os <a href="#">termos de uso</a> e <a href="#">política de privacidade</a></label>
+    </div>
+    
+    <div class="form-actions">
+      <button class="btn-secondary" onclick="mostrarLogin()">
+        <i class="fas fa-arrow-left"></i> Voltar
+      </button>
+      <button class="btn-primary" onclick="realizarCadastro()">
+        <i class="fas fa-check"></i> Cadastrar
+      </button>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3><i class="fas fa-shield-alt"></i> Segurança Garantida</h3>
+    <p><i class="fas fa-check-circle"></i> Dados protegidos pela LGPD</p>
+    <p><i class="fas fa-check-circle"></i> Autenticação segura</p>
+    <p><i class="fas fa-check-circle"></i> Criptografia de ponta a ponta</p>
+  </div>
+</div>
+
+<div class="gov-footer">
+  <p>© 2024 Governo Federal do Brasil. Todos os direitos reservados. Confia!!</p>
+</div>
+
+</body>
+</html>
