@@ -302,7 +302,7 @@ MIT License.
 
 ## Autor
 
-Seu Nome -- seu.email@dominio.com
+Tiago M.
 
 ## Nota Final
 
